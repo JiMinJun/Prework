@@ -48,7 +48,15 @@ namespace IntuitProject.Api.Services
 
         public int GetReferralCount(string url)
         {
-            var urlDomain = new Uri(url).Host;
+            var urlDomain = "";
+            try
+            {
+                urlDomain = new Uri(url).Host;
+            }
+            catch
+            {
+                urlDomain = url;
+            }
             var count = (from referrer in Referrers
                          join counts in ReferralCounts
                          on referrer.Id equals counts.ReferrerId
@@ -59,7 +67,15 @@ namespace IntuitProject.Api.Services
 
         public void IncreaseReferralCount(string url)
         {
-            var urlDomain = new Uri(url).Host;
+            var urlDomain = "";
+            try
+            {
+                urlDomain = new Uri(url).Host;
+            }
+            catch
+            {
+                urlDomain = url;
+            }
             var existingReferrer = Referrers.FirstOrDefault(x => x.UrlHost == urlDomain);
             if (existingReferrer == null)
             {
